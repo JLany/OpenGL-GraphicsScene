@@ -18,7 +18,7 @@
 #define MAX_LOADSTRING 100
 #define XAXIS 1.0f,0.0f,0.0f
 #define YAXIS 0.0f,1.0f,0.0f
-#define ZAXIS 1.0f,0.0f,1.0f
+#define ZAXIS 0.0f,0.0f,1.0f
 
 
 LPCWSTR const Sound_File_Open1 = L"open ./havent_you_heared.mp3 type mpegvideo alias Current_Sound_Command1";
@@ -27,7 +27,6 @@ LPCWSTR const Sound_File_Open3 = L"open ./saout_safeer.mp3 type mpegvideo alias 
 void PlaySong1()
 {
 	MCIERROR open = mciSendString(Sound_File_Open1, NULL, 0, NULL);
-
 	MCIERROR play = mciSendString(L"play Current_Sound_Command1 repeat", NULL, 0, NULL);
 }
 
@@ -40,7 +39,6 @@ void StopSong1()
 void PlaySong2()
 {
 	MCIERROR open = mciSendString(Sound_File_Open2, NULL, 0, NULL);
-
 	MCIERROR play = mciSendString(L"play Current_Sound_Command2 repeat", NULL, 0, NULL);
 }
 
@@ -53,7 +51,6 @@ void StopSong2()
 void PlaySong3()
 {
 	MCIERROR open = mciSendString(Sound_File_Open3, NULL, 0, NULL);
-
 	MCIERROR play = mciSendString(L"play Current_Sound_Command3 repeat", NULL, 0, NULL);
 }
 
@@ -88,6 +85,17 @@ float windowRotationAxis = 0.025f;
 
 float doortheta = 0.0f;
 
+
+void ApplySceneTransformations()
+{
+	glPushMatrix();
+	glLoadIdentity();
+
+	glTranslatef(xpos, ypos, zpos);
+
+	glRotatef(xtheta, XAXIS);
+	glRotatef(ytheta, YAXIS);
+}
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
@@ -320,14 +328,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-
-		glPushMatrix();
-		glLoadIdentity();
-
-		glTranslatef(xpos, ypos, zpos);
-
-		glRotatef(xtheta, 1.0, 0.0, 0.0);
-		glRotatef(ytheta, 0.0, 1.0, 0.0);
+		ApplySceneTransformations();
 
 
 		// house
@@ -352,15 +353,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		// black inside right
 		glTranslatef(0.245f, 0.9f, 0.2f + 0.035f);
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
 		glTranslatef(-0.245f, -0.9f, -0.2f - 0.035f);
 
 		glTranslatef(0.245f, 0.9f, 0.2f - 0.035f);
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
 		glTranslatef(-0.245f, -0.9f, -0.2f + 0.035f);
 
 
@@ -371,9 +368,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		glRotatef(-windowtheta, YAXIS);
 		glTranslatef(0.0f, 0.0f, -windowRotationAxis);
 
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
 
 		glTranslatef(0.0f, 0.0f, windowRotationAxis);
 		glRotatef(windowtheta, YAXIS);
@@ -388,9 +383,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		glRotatef(windowtheta, YAXIS);
 		glTranslatef(0.0f, 0.0f, windowRotationAxis);
 
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
 
 		glTranslatef(0.0f, 0.0f, -windowRotationAxis);
 		glRotatef(-windowtheta, YAXIS);
@@ -403,15 +396,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		// black inside left
 		glTranslatef(0.245f, 0.9f, -0.2f + 0.035f);
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
 		glTranslatef(-0.245f, -0.9f, 0.2f - 0.035f);
 
 		glTranslatef(0.245f, 0.9f, -0.2f - 0.035f);
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
 		glTranslatef(-0.245f, -0.9f, 0.2f + 0.035f);
 
 
@@ -422,9 +411,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		glRotatef(-windowtheta, YAXIS);
 		glTranslatef(0.0f, 0.0f, -windowRotationAxis);
 
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
 
 		glTranslatef(0.0f, 0.0f, windowRotationAxis);
 		glRotatef(windowtheta, YAXIS);
@@ -439,9 +426,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		glRotatef(windowtheta, YAXIS);
 		glTranslatef(0.0f, 0.0f, windowRotationAxis);
 
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
 
 		glTranslatef(0.0f, 0.0f, -windowRotationAxis);
 		glRotatef(-windowtheta, YAXIS);
@@ -454,15 +439,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		// black inside right
 		glTranslatef(0.245f, 0.3f, 0.2f + 0.035f);
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
 		glTranslatef(-0.245f, -0.3f, -0.2f - 0.035f);
 
 		glTranslatef(0.245f, 0.3f, 0.2f - 0.035f);
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
 		glTranslatef(-0.245f, -0.3f, -0.2f + 0.035f);
 
 
@@ -473,9 +454,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		glRotatef(-windowtheta, YAXIS);
 		glTranslatef(0.0f, 0.0f, -windowRotationAxis);
 
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
 
 		glTranslatef(0.0f, 0.0f, windowRotationAxis);
 		glRotatef(windowtheta, YAXIS);
@@ -490,9 +469,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		glRotatef(windowtheta, YAXIS);
 		glTranslatef(0.0f, 0.0f, windowRotationAxis);
 
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
 
 		glTranslatef(0.0f, 0.0f, -windowRotationAxis);
 		glRotatef(-windowtheta, YAXIS);
@@ -506,15 +483,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		// black inside left
 		glTranslatef(0.245f, 0.3f, -0.2f + 0.035f);
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
 		glTranslatef(-0.245f, -0.3f, 0.2f - 0.035f);
 
 		glTranslatef(0.245f, 0.3f, -0.2f - 0.035f);
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, black);
 		glTranslatef(-0.245f, -0.3f, 0.2f + 0.035f);
 
 
@@ -525,9 +498,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		glRotatef(-windowtheta, YAXIS);
 		glTranslatef(0.0f, 0.0f, -windowRotationAxis);
 
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
 
 		glTranslatef(0.0f, 0.0f, windowRotationAxis);
 		glRotatef(windowtheta, YAXIS);
@@ -542,9 +513,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		glRotatef(windowtheta, YAXIS);
 		glTranslatef(0.0f, 0.0f, windowRotationAxis);
 
-		glRotatef(90.0f, YAXIS);
-		DrawBeam(0.0f, 0.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
-		glRotatef(-90.f, YAXIS);
+		DrawBeam(0.0f, 90.0f, 0.0f, 0.15f, 0.5f, 0.025f, cube, gray);
 
 		glTranslatef(0.0f, 0.0f, -windowRotationAxis);
 		glRotatef(-windowtheta, YAXIS);
@@ -602,7 +571,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 		glTranslatef(0.0f, -0.34f, 0.0f);
-		glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+		glRotatef(90.0f, XAXIS);
 		glOrtho(-200, 200, -200, 200, -100, 100);
 
 		BresenhamCircleAlgorithm::Draw({ 0.0f, 0.0f, 0.0f }, 130.0f, 20.0f, gray);
@@ -613,19 +582,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 
-		// front wheel
-		glLoadIdentity();
-
 		// whole scene coordinates
-		glTranslatef(xpos, ypos, zpos);
-		glRotatef(xtheta, 1.0, 0.0, 0.0);
-		glRotatef(ytheta, 0.0, 1.0, 0.0);
+		ApplySceneTransformations();
+
+		// front wheel
 
 		// object specific trnsformations'
-		glRotatef(bikeCirculationTheta, 0.0f, 1.0f, 0.0f);
+		glRotatef(bikeCirculationTheta, YAXIS);
 		glTranslatef(bikeCenter.x, bikeCenter.y, bikeCenter.z + 0.1f);
-		glRotatef(frontwheeltheta, 0.0f, 1.0f, 0.0f);
-		glRotatef(wheeltheta, 0.0f, 0.0f, 1.0f);
+		glRotatef(frontwheeltheta, YAXIS);
+		glRotatef(wheeltheta, ZAXIS);
 		glScalef(0.1f, 0.1f, 0.1f);
 
 		DrawBeam(0.0f, 0.0f, 0.0f, 3.0f, 0.25f, 0.25f, cube, beamsColor);
@@ -638,20 +604,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		BresenhamCircleAlgorithm::Draw({ 0.0f, 0.0f, 0.0f }, 150, 5.0f, bikeColor);
 
 
+
+
+		// whole scene coordinates
+		ApplySceneTransformations();
 
 		// back wheel
-		glLoadIdentity();
-
-		// whole scene coordinates
-		glTranslatef(xpos, ypos, zpos);
-		glRotatef(xtheta, 1.0, 0.0, 0.0);
-		glRotatef(ytheta, 0.0, 1.0, 0.0);
 
 		// object specific trnsformations
-		glRotatef(bikeCirculationTheta, 0.0f, 1.0f, 0.0f);
+		glRotatef(bikeCirculationTheta, YAXIS);
 		glTranslatef(bikeCenter.x, bikeCenter.y, bikeCenter.z - 0.1f);
-		glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-		glRotatef(wheeltheta, 0.0f, 0.0f, 1.0f);
+		glRotatef(90.0f, YAXIS);
+		glRotatef(wheeltheta, ZAXIS);
 		glScalef(0.1f, 0.1f, 0.1f);
 
 		DrawBeam(0.0f, 0.0f, 0.0f, 3.0f, 0.25f, 0.25f, cube, beamsColor);
@@ -665,40 +629,38 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		BresenhamCircleAlgorithm::Draw({ 0.0f, 0.0f, 0.0f }, 150, 5.0f, bikeColor);
 
 
-		// bike body
-		glLoadIdentity();
 
 		// whole scene coordinates
-		glTranslatef(xpos, ypos, zpos);
-		glRotatef(xtheta, 1.0, 0.0, 0.0);
-		glRotatef(ytheta, 0.0, 1.0, 0.0);
+		ApplySceneTransformations();
+
+		// bike body
 
 		// object specific trnsformations
-		glRotatef(bikeCirculationTheta, 0.0f, 1.0f, 0.0f);
+		glRotatef(bikeCirculationTheta, YAXIS);
 		glTranslatef(bikeCenter.x, bikeCenter.y + 0.08, bikeCenter.z);
 		// 1
-		glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+		glRotatef(90.0f, YAXIS);
 		glScalef(0.1f, 0.1f, 0.1f);
 
 		// main body
 		DrawBeam(0.0f, 0.0f, 0.0f, 7.0f, 0.5f, 0.25f, cube, bikeColor);
 		// revert 1
 		glScalef(10.f, 10.f, 10.f);
-		glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+		glRotatef(-90.0f, YAXIS);
 
 		// seat
 		glTranslatef(0.0f, 0.05f, -0.08f);
-		glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+		glRotatef(90.0f, YAXIS);
 		glScalef(0.1f, 0.1f, 0.1f);
 		DrawBeam(0.0f, 0.0f, 90.0f, 2.0f, 0.5f, 1.0f, cube, bikeColor);
 
 		// revert 1
 		glScalef(10.f, 10.f, 10.f);
-		glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+		glRotatef(-90.0f, YAXIS);
 
 		// handle
 		glTranslatef(0.0f, 0.0f, 0.18f);
-		glRotatef(frontwheeltheta, 0.0f, 1.0f, 0.0f);
+		glRotatef(frontwheeltheta, YAXIS);
 
 		glScalef(0.1f, 0.1f, 0.1f);
 		DrawBeam(0.0f, 0.0f, 90.0f, 2.0f, 0.25f, 0.25f, cube, bikeColor);
